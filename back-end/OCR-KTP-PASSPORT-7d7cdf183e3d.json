@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "ocr-ktp-passport",
+  "private_key_id": "7d7cdf183e3dba710d73e2b65e8f27ecf385527e",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC+Wx+AE4RwSNcC\nPSckdiI0mynyijRqWynxEX+zZDvQUIOhddZEclVqZiQ7MN9+f+6pQywmasmpq2OW\naZQ9gWVvZ9GCCuHBcGniiNZ3vDAXPRGB8zbjTf4PLe1VgH0qsnsTW/mhgSM7i29h\n529S5uc7s8KGLsjsgv2aEb+bt0VE75OXe7dvq5xjVjcjfxg8D7PAnESeoLBSdWNP\n49f+158CpmrQdQysJjBMmqvItIlDeiT8HXIDQ/UnLjZSqcLvapMYsRH14YyX8tNi\nEtCccZq9x0zI5ORTQS7sEXTYEJl+k6bPJH8Q97pmwIisiO1q/TEGo1lq/bsWK6P8\npIFAf5zFAgMBAAECggEACxmKKTA6KUf+DZneRfCDhxjDJersKoV9WRrBnQbLvBZt\nzoTuBRi7pVQmabMsXRZ9pq4NjYHtl3Cwgm1OoRWCAjCGFXSn/F0fN3/uLZYyIbDE\nbBTwDuoV1fHCJJm08r/skFDtKf87PDYhvQ4/PhDLy/3r6mIhAjWTLyA40Y4qwl2y\nHF2T2QEnyRxtm95ymMjfPi2QXB+7x+H16wqKwNtMwLTZa2Za3LEtTWhXpi2ZINxn\nTlk7eXYYDnVYp43ss5Ed7FFAQRG7V98uUrHEYSi7gqturZ78U0O6/xPjNubvFE+e\nEk+tFwhDLY6WTFbqTYYq3DN6WdvBCiQ4iruuUi9pIQKBgQDydeJ/W4SEP7rJpKaK\nE0fIkqestFUNn45SZQoTY8zh79bYbQNx3LFmvBRXJh4Nn3T0FXZYpmxViO8oVzAd\n/NJ2BNasaZEpWceyIJWdQcjeisMKnifguhBZXOA5T0tiqCajqr8d3eTgrLi4b/0v\ndoJ7lScMSE+6VQhEbg1pQ8ka8QKBgQDI/F+Pdf2TLkcSxZ3O0m8Fmn3AbmRtkYaU\nyTDvWgZxpJs+opAZ0bKec4I0+zK/q9KJLRbqjr6rNCzTcLOKHnNwA8woGOz7M4yN\njXLyPtFJL16aluG6VCeJ6FzsbxHrFvT5omuEDbQUdHpO2fTn5PkotRa1WTO4etlN\n3/enwWDXFQKBgQCPcckH2igjaeTjaWMSK2f7tTA4UBRF1BEKlDaK1C+huBiewJga\nJBxckIdkK+v52U4DHjN/LS7IyBPeBP81rp8BLcmoBWjZUwF/VCHQANyLNQNBY+Jp\n5QrJI9aQcWZDPwJlMB6T1/SSK/25OKBNFUsLPGn2rU1mCuqyOX37uhvfsQKBgGKT\nHQ9QsGjSZrt3PvnkTd1ys0CBJDJ1EIvCzYRnJAfy0s16j7CKH9AFGRSBK5fEXwM2\noSmzjyKK+X1OplAUtUt4IVZ9OyXNV59Jg9n6I02AtSae3+EySx4hYAn6Q9CItugE\n2DSxP+RUaHRqA+sEa4uinZueP3a4kgHW2jFl7+gtAoGBAJP6crr1AtRJm6Ihs2DI\nhuBnB/+e9uD0/RIQsQAFkwTMs9WkDhO07asjQem6+MNheMWBCSMrPYC0hdjZJSvQ\nNrw24dV9b24soLTG3V1RJ/SX/E/LEOyiDj50W+0t8d7vWvhwdYvcbwzWAtojefLn\nkIABuFz7cwD1uOkim9TEqBPw\n-----END PRIVATE KEY-----\n",
+  "client_email": "ocr-846@ocr-ktp-passport.iam.gserviceaccount.com",
+  "client_id": "110217024102841283948",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/ocr-846%40ocr-ktp-passport.iam.gserviceaccount.com"
+}
