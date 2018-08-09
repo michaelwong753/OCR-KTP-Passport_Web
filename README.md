@@ -6,6 +6,11 @@ Vuejs Front End language
 Nodejs Back End language
 
 ## Installation
+
+Install Imagemagick from [ImageMagick](https://github.com/aheckmann/gm)
+
+Install tesseract from [Tesseract](https://github.com/tesseract-ocr/tesseract)
+
 Front End :
 ```
 npm run dev
