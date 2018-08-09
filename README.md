@@ -5,7 +5,7 @@ Vuejs Front End language
 
 Nodejs Back End language
 
-## Instalation
+## Installation
 Front End :
 ```
 npm run dev
