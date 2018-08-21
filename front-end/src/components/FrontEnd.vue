@@ -3,7 +3,7 @@
     <div class="large-12 medium-12 small-12 cell">
       <h1>OCR FOR KTP/PASSPORT WEB VERSION</h1>
       <label >Upload
-        <input type="file" id="file" ref="file"  accept="image/*" v-on:change="handleFileUpload()"/>
+        <input type="file" id="file" ref="file"  accept="image/*" v-on:change="handleFileUpload()" multiple/>
         </br>
         <p>Please choose type of your image:</p>
         <button v-on:click="ktpFunction()">KTP</button>
@@ -14,8 +14,108 @@
       <img v-bind:src="imagePreview" v-show="showPreview"/>
     </br></br>
       <button  v-if='click' v-on:click="submitFile()">Submit</button> <br/><br/>
-      <p>Result:</p>
-        <pre >{{ result }}</pre>
+      <p v-if= 'wrongKTP'>{{result}}</p>
+      <table align= "center" style="width:50%" v-if='fileName == "KTP"'>
+        <tr>
+          <th>Provinsi:</th>
+          <td>{{result.Provinsi}}</td>
+        </tr>
+        <tr>
+          <th>Kota:</th>
+          <td>{{result.Kota}}</td>
+        </tr>
+        <tr>
+          <th>NIK:</th>
+          <td>{{result.NIK}}</td>
+        </tr>
+        <tr>
+          <th>Nama:</th>
+          <td>{{result.Nama}}</td>
+        </tr>
+        <tr>
+          <th>Tempat/Tgl Lahir:</th>
+          <td>{{result.Tempat_Tgl_Lahir}}</td>
+        </tr>
+        <tr>
+          <th>Jenis Kelamin:</th>
+          <td>{{result.Jenis_Kelamin}}</td>
+        </tr>
+        <tr>
+          <th>Golongan Darah:</th>
+          <td>{{result.Gol_Darah}}</td>
+        </tr>
+        <tr>
+          <th>Alamat:</th>
+          <td>{{result.Alamat}}</td>
+        </tr>
+        <tr>
+          <th>RT/RW:</th>
+          <td>{{result.RT_RW}}</td>
+        </tr>
+        <tr>
+          <th>Kel/Desa:</th>
+          <td>{{result.Kel_Desa}}</td>
+        </tr>
+        <tr>
+          <th>Kecamatan:</th>
+          <td>{{result.Kecamatan}}</td>
+        </tr>
+        <tr>
+          <th>Agama:</th>
+          <td>{{result.Agama}}</td>
+        </tr>
+        <tr>
+          <th>Status Perkawinan:</th>
+          <td>{{result.Status_Perkawinan}}</td>
+        </tr>
+        <tr>
+          <th>Pekerjaan:</th>
+          <td>{{result.Pekerjaan}}</td>
+        </tr>
+        <tr>
+          <th>Kewarganegaraan:</th>
+          <td>{{result.Kewarganegaraan}}</td>
+        </tr>
+        <tr>
+          <th>Berlaku Hingga:</th>
+          <td>{{result.Berlaku_Hingga}}</td>
+        </tr>
+      </table>
+       <p v-if= 'wrongPassport'>{{result}}</p>
+       <table align= "center" style="width:50%" v-if='fileName == "Passport"'>
+        <tr>
+          <th>Jenis:</th>
+          <td>{{result.Jenis}}</td>
+        </tr>
+        <tr>
+          <th>Kode Negara:</th>
+          <td>{{result.Kode_Negara}}</td>
+        </tr>
+        <tr>
+          <th>Nama Lengkap:</th>
+          <td>{{result.Nama_Lengkap}}</td>
+        </tr>
+        <tr>
+          <th>No Paspor:</th>
+          <td>{{result.No_Paspor}}</td>
+        </tr>
+        <tr>
+          <th>Tgl Lahir:</th>
+          <td>{{result.Tgl_Lahir}}</td>
+        </tr>
+        <tr>
+          <th>Jenis Kelamin:</th>
+          <td>{{result.Jenis_Kelamin}}</td>
+        </tr>
+        <tr>
+          <th>Tgl Pengeluaran:</th>
+          <td>{{result.Tgl_Pengeluaran}}</td>
+        </tr>
+        <tr>
+          <th>Tgl Habis Berlaku:</th>
+          <td>{{result.Tgl_Habis_Berlaku}}</td>
+        </tr>
+     </table>
     </div>
   </div>
 </template>
@@ -31,6 +131,8 @@
         showPreview: false,
         imagePreview: '',
         click: false,
+        wrongKTP: false,
+        wrongPassport: false,
         fileName:''
       }
     },
@@ -45,7 +147,7 @@
         var self = this
         axios({
           method: 'POST',
-          url: 'http://localhost:3000/upload',
+          url: 'http://206.189.159.245:3000/upload',
           headers: {
     		   'Accept': 'application/json',
     		   'Content-Type': 'multipart/form-data',
@@ -55,13 +157,15 @@
         })
         .then(function(response){
           self.result = response.data
-          console.log(self.result)
-          console.log((self.result).length)
-          if(   self.fileName == 'KTP' && ( (self.result).length <= 300 || (self.result).length > 450 )  ){
+          self.wrongKTP = false
+          self.wrongPassport = false
+          if(   self.fileName == 'KTP' && ( self.result.data <= 200 || self.result.data > 400 )  ){
             self.result = 'IMAGE INVALID, PLEASE CHECK YOUR IMAGE QUALITY AND MAKE SURE IT IS A KTP'
+            self.wrongKTP = true
           }
-          else if(self.fileName == 'Passport' &&  ( (self.result).length <= 250  || (self.result).length > 500 )  ){
+          else if(self.fileName == 'Passport' &&  ( (self.result).data <= 80 || (self.result).data > 100 )  ){
               self.result = 'IMAGE INVALID, PLEASE CHECK YOUR IMAGE QUALITY AND MAKE SURE IT IS A PASSPORT'
+              self.wrongPassport = true
           }
           console.log('SUCCESS!!');
         })
@@ -95,6 +199,7 @@
       passportFunction(){
         this.fileName = 'Passport'
         this.click = 'true'
+        this.result = ' '
       }
 
 
@@ -108,4 +213,9 @@ div.container img{
   max-width: 200px;
   max-height: 200px;
 }
+table, th, td {
+    border: 1px solid black;
+    width: 50%;
+}
 </style>
+
