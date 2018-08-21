@@ -9,6 +9,7 @@ Install tesseract from [Tesseract](https://github.com/tesseract-ocr/tesseract)
 
 ## How To Use 
 ```
-node app.js
+cd back-end && node app.js
 ```
-
+### Notes
+Changes in port from js folder is needed when running in different port/address
