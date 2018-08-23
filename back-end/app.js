@@ -24,6 +24,7 @@ var options2 = {
         binary: 'tesseract'
 };
 
+//Command for deploying data to database
 var mongoose = require('mongoose')
 
 mongoose.Promise = global.Promise
@@ -60,6 +61,7 @@ var HasilKTP = con.model("HasilKTP",new mongoose.Schema({
 
 
 app.use(cors())
+//serve static files such as images, CSS files, and JavaScript files
 app.use(express.static(__dirname + '/public'));
 
 app.use(bodyParser.json());
@@ -70,24 +72,26 @@ app.post('/upload',upload.single('fileData'), (req, res,next) => {
    if (err) {
    console.log('Error: ', err);
   }else{
+   //show image in binary 
    console.log('File contents ',contents);
   }
  });
 
  //for KTP
  if(req.headers.name == 'KTP'){
+   //imageMagick for image processing
    gm(req.file.path)
-   .density(600,600)
-   .resizeExact(1200, 755)
+   .density(600,600) // increase dpi
+   .resizeExact(1200, 755) // resize with ratio
+   .quality(100) 
+   .crop(569,647, 266, 5) // crop to trim only text part
+   .autoOrient() 
    .quality(100)
-   .crop(569,647, 266, 5)
-   .autoOrient()
-   .quality(100)
-   .colorspace('GRAY')
-   .threshold('40','Threshold-White')
+   .colorspace('GRAY') // make picture grayscale
+   .threshold('40','Threshold-White') // make picture black&white
    .quality(100)
    .write(__dirname + "/HasilGambarKTP.png", function(err){
-
+	//tesseract for OCR
      tesseract.process(__dirname + '/HasilGambarKTP.png',options,function(err, text) {
        if(err) {
          console.error(err);
@@ -98,6 +102,7 @@ app.post('/upload',upload.single('fileData'), (req, res,next) => {
          array[16]= ''
          var o = 0
 	  console.log(text)
+	  //return empty if it doesnt match the requirements
 	 if(text.length < 150 || text.length > 400){
 		let db_data = {
                Provinsi: '',
@@ -121,7 +126,7 @@ app.post('/upload',upload.single('fileData'), (req, res,next) => {
 		res.json(db_data) 
 	 }
 	    else{
-	       
+	    //make all lines to have only 1 space away from the other
          for(var i =0;i<text.length;i++){
            result += text[i]
            if(text[i+1] == '\n' && text[i+2] == '\n'){
@@ -130,6 +135,8 @@ app.post('/upload',upload.single('fileData'), (req, res,next) => {
             }
          }
          var apa = ''
+	
+	//splitting the "Gol.Darah" Part	    
          for(var i =0;i<text.length;i++){
            arrayfill += result[i]
               if(o == 5){
@@ -147,11 +154,13 @@ app.post('/upload',upload.single('fileData'), (req, res,next) => {
              i += 1
              o += 1
             }
+		//reduce error
             if( result[i] == '=' || result[i] == '©' || result[i] == '[' || result[i] == ']' ||result[i] == ':' || result[i] == '+' || result[i] == ';'|| result[i] == "“" || result[i] == "|" ){
 		    if(arrayfill.length < 7)
 		    arrayfill = ' '
             }
          }
+  	//if address part has 2 lines
          if(array[16].length > 5){
            array[7] = array[7] + array[8]
            array[8] = array[9]
@@ -163,10 +172,12 @@ app.post('/upload',upload.single('fileData'), (req, res,next) => {
            array[14]=array[15]
            array[15]=array[16]
          }
+	 //return empty if any of lines are undefined
 	if(array[15] == undefined || array[15] == ''){
 		array.fill(' ',0,15)
 		text = '  '
 	}
+	//assign every array
          let db_data = {
                Provinsi: array[0],
                Kota: array[1],
@@ -188,10 +199,13 @@ app.post('/upload',upload.single('fileData'), (req, res,next) => {
           };
 	console.log(db_data)		    
          res.json(db_data)
+         //saving data to database
 	 HasilKTP(db_data).save(function(err,data){
                   if(err) throw err
           })
 	    }
+
+	  //delete picture after processed
 	  fs.unlink(__dirname + "/HasilGambarKTP.png", (err) => {
     if (err) {
         console.log("failed to delete processed image:"+err);
@@ -215,6 +229,7 @@ app.post('/upload',upload.single('fileData'), (req, res,next) => {
 
 // for Passport
 else{
+ //imagemagick for image processing
   gm(req.file.path)
   .resizeExact(1400, 1000)
   .quality(100)
@@ -236,6 +251,7 @@ else{
         var o =2;
         var bool = 0
         var temp;
+	//getting every words until have reached '<' or spaces
         for(var i =5;i<text.length;i++){
               if(text[i] != '<' && text[i] != '\n' ){
                   arrayfill += text[i]
@@ -252,7 +268,7 @@ else{
                         }
                       }
             }
-
+		// making first name,last name,and middle name to 1 array
             else if(text[i] == '\n'){
                     if(o == 5){
                       array[2] = array[3] + ' '+ array[4] + ' ' + array[2]
@@ -267,6 +283,7 @@ else{
             }
 
         }
+	//combining separated date num to 1 array
         for(var i = temp+2;i<text.length;i++){
           if(text[i-1] == 'N'){
             array[o] = text[i+4]+text[i+5] + '-' + text[i+2]+text[i+3] + '-' + '19'+text[i]+text[i+1]
@@ -283,12 +300,12 @@ else{
             array[o+2] = text[i+5] + text[i+6] + '-' +text[i+3] + text[i+4] + '-' + '20'+ num
           }
         }
-
+	//if undefined return empty
           if(array[7] == undefined || array[7] == ''){
                 array.fill(' ',0,7)
                 text = '  '
         }
-
+	//asign every array
 	let db_data = {
               Jenis: array[0],
               Kode_Negara: array[1],
@@ -301,9 +318,11 @@ else{
               data: text.length
          };
         res.json(db_data) 
+	//save to database
 	HasilPassport(db_data).save(function(err,data){
                   if(err) throw err
           })
+	//delete processed image
 	fs.unlink(__dirname + "/HasilGambarPas.png", (err) => {
     if (err) {
         console.log("failed to delete processed image:"+err);
@@ -330,6 +349,7 @@ else{
 
 });
 
+//getting the front-end
 app.get('/', function(req, res, next) {
  res.render('index.ejs');
 });
